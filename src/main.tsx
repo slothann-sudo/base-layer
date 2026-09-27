@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Link, Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { MainTaskPretestPage } from './pretests/main/MainTaskPretestPage'
+import { SubTaskPretestPage } from './pretests/sub/SubTaskPretestPage'
 import './style.css'
 
-type Status = '未开始' | '进行中' | '已完成'
+export type Status = '未开始' | '进行中' | '已完成'
 type RunStatus = '待开始' | '进行中' | '已暂停'
 type Support = 'N0' | 'N1' | 'N2' | 'N3' | 'N4'
 type Conditions = { intervention: string; modality: string; support: Support | '' }
@@ -21,7 +23,7 @@ type SavedState = {
   activeFormal: FormalSession | null
   formalRecords: FormalRecord[]
 }
-type Platform = { state: SavedState; setState: React.Dispatch<React.SetStateAction<SavedState>> }
+export type Platform = { state: SavedState; setState: React.Dispatch<React.SetStateAction<SavedState>> }
 
 const pretests = [
   { id: 'PT-01', slug: 'main-task', name: '主任务预实验', description: '熟悉持续动态目标跟踪主任务。', purpose: '熟悉持续动态目标跟踪主任务，并调整主任务参数。' },
@@ -220,6 +222,6 @@ function FormalRunPage({ state, setState }: Platform) {
 }
 function App() {
   const platform = usePlatform()
-  return <Routes><Route path="/" element={<Home {...platform} />} /><Route path="/pretest/:slug" element={<PretestPage {...platform} />} /><Route path="/formal/run" element={<FormalRunPage {...platform} />} /><Route path="*" element={<Navigate to="/" replace />} /></Routes>
+  return <Routes><Route path="/" element={<Home {...platform} />} /><Route path="/pretest/main-task" element={<MainTaskPretestPage {...platform} />} /><Route path="/pretest/sub-task" element={<SubTaskPretestPage {...platform} />} /><Route path="/pretest/:slug" element={<PretestPage {...platform} />} /><Route path="/formal/run" element={<FormalRunPage {...platform} />} /><Route path="*" element={<Navigate to="/" replace />} /></Routes>
 }
 createRoot(document.getElementById('root')!).render(<React.StrictMode><BrowserRouter><App /></BrowserRouter></React.StrictMode>)
